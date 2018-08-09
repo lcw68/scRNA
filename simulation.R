@@ -27,6 +27,14 @@ DATA <- function(set.size,samplesize,n.latent,a.latent,a.individual,b.latent,b.i
   
   NB <- matrix(rpois(set.size*samplesize,y.sum),nrow=set.size,ncol=samplesize,byrow=F)
   k=set.size
+  SS <- matrix(0,ncol=set.size,nrow=set.size)
+  for(i in 1:set.size)
+  {
+    for(j in 1:set.size)
+    {
+      SS[i,j] <- mutinformation(t(NB)[,i],t(NB)[,j])
+    }
+  }
   S<- sum(cor(t(NB))-diag(k))/(k*(k-1))
   return(list(NB,S,cor(t(NB))))
 }
@@ -44,3 +52,4 @@ output<- do.call(rbind,Result)
 
 pairwise <- lapply(1:n.set,function(x) DATA(set.size[x],samplesize,n.latent,a.latent,a.individual[x],b.latent,b.individual[x],pp)[[3]])
 
+help(zeroinfl)
